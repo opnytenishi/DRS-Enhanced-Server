@@ -1,0 +1,36 @@
+/*
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
+ */
+package com.drs.drs_enhanced;
+
+import jakarta.persistence.*;
+
+public class JPAUtil {
+    private static final EntityManagerFactory emf;
+
+    static {
+        emf = Persistence.createEntityManagerFactory("DRS_ENHANCED_PU");
+    }
+
+    public static EntityManager getEntityManager() {
+        return emf.createEntityManager();
+    }
+    
+    public static boolean checkConnection() {
+        try (EntityManager em = getEntityManager()) {
+            em.getTransaction().begin();  
+            em.getTransaction().rollback();
+            System.out.println("Database connection successful.");
+            return true;
+        } catch (Exception e) {
+            System.err.println("Database connection failed:");
+            System.out.println("Error:" + e.getMessage());
+            return false;
+        }
+    }
+
+    public static void close() {
+        emf.close();
+    }
+}
