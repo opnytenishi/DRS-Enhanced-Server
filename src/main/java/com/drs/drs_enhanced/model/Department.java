@@ -1,5 +1,6 @@
 package com.drs.drs_enhanced.model;
 
+import jakarta.persistence.ElementCollection;
 import jakarta.persistence.Entity;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.JoinTable;
@@ -24,8 +25,8 @@ public class Department extends User{
     public Department() {
     }
 
-    public Department(String departmentName, List<Supply> supplies, String name, String email, String password, String userType, String region) {
-        super(name, email, password, userType, region);
+    public Department(String departmentName, List<Supply> supplies, String name, String email, String password,String region) {
+        super(name, email, password, region);
         this.departmentName = departmentName;
         this.supplies = supplies;
     }
