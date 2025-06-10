@@ -16,7 +16,7 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <maven.compiler.source>21</maven.compiler.source>
         <maven.compiler.target>21</maven.compiler.target>
-        <exec.mainClass>com.drs.drs_enhanced_server.DRS_Enhanced_Server</exec.mainClass>
+        <exec.mainClass>com.drs.drs_enhanced.DRS_Enhanced_Server</exec.mainClass>
     </properties>
     
     <dependencies>
