@@ -1,11 +1,14 @@
 package com.drs.drs_enhanced.service;
 
 import com.drs.drs_enhanced.JPAUtil;
+import com.drs.drs_enhanced.model.Responder;
 import com.drs.drs_enhanced.model.User;
 import jakarta.persistence.*;
 
 public class UserService {
     
+    private final static String responderEmail = "responder@gmail.com";
+    private final static String responderPassword = "responder";
     /**
      * Authenticate a user by username and password.
      *
@@ -66,4 +69,43 @@ public class UserService {
         }
     }
     
+    public static Responder getOrCreateResponder() {
+        EntityManager em = JPAUtil.getEntityManager();
+        EntityTransaction transaction = em.getTransaction();
+        Responder responder = null;
+
+        try {
+            TypedQuery<Responder> query = em.createQuery(
+                "SELECT r FROM Responder r WHERE r.email = :email", Responder.class);
+            query.setParameter("email", responderEmail);
+
+            responder = query.getResultStream().findFirst().orElse(null);
+
+            if (responder == null) {
+                responder = new Responder();
+                responder.setName("Responder");
+                responder.setEmail(responderEmail);
+                responder.setPassword(responderPassword);
+                responder.setRegion("Central");
+
+                transaction.begin();
+                em.persist(responder);
+                transaction.commit();
+            }
+
+        } catch (Exception e) {
+            if (transaction.isActive()) {
+                transaction.rollback();
+            }
+            System.out.println("Error" + e.getMessage());
+            responder = null;
+        } finally {
+            if (em.isOpen()) {
+                em.close();
+            }
+        }
+
+        return responder;
+    }
+ 
 }

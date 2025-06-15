@@ -1,5 +1,6 @@
 package com.drs.drs_enhanced;
 
+import com.drs.drs_enhanced.service.UserService;
 import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
@@ -17,6 +18,8 @@ public class DRS_Enhanced_Server {
             } else {
                 System.out.println("Failed to connect to the database : / \nRunning in test mode.");
             }
+            
+            UserService.getOrCreateResponder();
             
             while (true) {
                 Socket clientSocket = serverSocket.accept();

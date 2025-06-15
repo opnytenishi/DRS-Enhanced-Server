@@ -6,10 +6,12 @@ com\drs\drs_enhanced\ClientHandler.class
 com\drs\drs_enhanced\model\Department_.class
 com\drs\drs_enhanced\model\PublicUser_.class
 com\drs\drs_enhanced\service\UserService.class
+com\drs\drs_enhanced\model\Responder_.class
 com\drs\drs_enhanced\model\User.class
 com\drs\drs_enhanced\DRS_Enhanced_Server.class
 com\drs\drs_enhanced\model\Department.class
 com\drs\drs_enhanced\model\User_.class
 com\drs\drs_enhanced\model\Supply_.class
+com\drs\drs_enhanced\model\Responder.class
 com\drs\drs_enhanced\model\Supply.class
 com\drs\drs_enhanced\JPAUtil.class
