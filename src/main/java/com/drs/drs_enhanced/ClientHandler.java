@@ -157,6 +157,12 @@ public class ClientHandler implements Runnable {
                                 System.out.println("Notification Adding Failed!");
                             }
                             break;
+                            
+                        case "getAllNotifications":
+                            System.out.println("Get All Notification attempt");
+                            response = NotificationService.getAllNotifications();
+                            out.writeObject(response);
+                            break;
 
                         case "test":
                             out.writeObject("Server received Notification!");
