@@ -69,6 +69,12 @@ public class ClientHandler implements Runnable {
                                 System.out.println("Login Failed!");
                             }
                             break;
+                            
+                        case "getUnassignedIncidents":
+                            System.out.println("Get Unassigned Incident attempt");
+                            response = IncidentService.getUnassignedIncidents();
+                            out.writeObject(response);
+                            break;
 
                         case "test":
                             out.writeObject("Server received test!");

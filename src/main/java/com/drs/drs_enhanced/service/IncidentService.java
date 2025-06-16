@@ -3,6 +3,7 @@ package com.drs.drs_enhanced.service;
 import com.drs.drs_enhanced.JPAUtil;
 import com.drs.drs_enhanced.model.Incident;
 import jakarta.persistence.*;
+import java.util.List;
 
 public class IncidentService {
     /**
@@ -25,10 +26,19 @@ public class IncidentService {
             if (transaction.isActive()) {
                 transaction.rollback();
             }
-            e.printStackTrace();
+            System.out.println("Error: " + e.getMessage());
             return false;
         } finally {
             em.close();
+        }
+    }
+    
+    public static List<Incident> getUnassignedIncidents() {
+        try (EntityManager em = JPAUtil.getEntityManager()) {
+            return em.createNamedQuery(
+                    "Incident.findUnassigned", 
+                    Incident.class)
+                     .getResultList();
         }
     }
 }
