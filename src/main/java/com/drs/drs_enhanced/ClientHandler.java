@@ -1,10 +1,7 @@
 package com.drs.drs_enhanced;
 
 import com.drs.drs_enhanced.model.*;
-import com.drs.drs_enhanced.service.IncidentService;
-import com.drs.drs_enhanced.service.ShelterService;
-import com.drs.drs_enhanced.service.SupplyService;
-import com.drs.drs_enhanced.service.UserService;
+import com.drs.drs_enhanced.service.*;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
@@ -33,6 +30,7 @@ public class ClientHandler implements Runnable {
                     Supply supply;
                     Object response;
                     Shelter shelter;
+                    Notification notification;
                     boolean responseBoolean;
 
                     switch (action) {
@@ -115,7 +113,7 @@ public class ClientHandler implements Runnable {
                             break;
 
                         case "assignSupplyToTeam":
-                            Map<String, Long> assignData = (Map<String, Long>)data;
+                            Map<String, Long> assignData = (Map<String, Long>) data;
                             responseBoolean = UserService.assignSupplyToDepartment(
                                     assignData.get("deptId"),
                                     assignData.get("supplyId")
@@ -140,8 +138,20 @@ public class ClientHandler implements Runnable {
                             }
                             break;
 
+                        case "addNotification":
+                            notification = (Notification) data;
+                            System.out.println("Add Notification attempt: " + notification.getNotificationDetail());
+                            responseBoolean = NotificationService.createNotification(notification);
+                            out.writeObject(responseBoolean);
+                            if (responseBoolean) {
+                                System.out.println("Notification Adding Success!");
+                            } else {
+                                System.out.println("Notification Adding Failed!");
+                            }
+                            break;
+
                         case "test":
-                            out.writeObject("Server received test!");
+                            out.writeObject("Server received Notification!");
                             break;
 
                         default:

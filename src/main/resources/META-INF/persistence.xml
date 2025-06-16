@@ -5,7 +5,8 @@
     <class>com.drs.drs_enhanced.model.Department</class>
     <class>com.drs.drs_enhanced.model.Incident</class>
     <class>com.drs.drs_enhanced.model.Responder</class>
-    <class>com.drs.drs_enhanced.model.Shelter</class>
+    <class>com.drs.drs_enhanced.model.Shelter</class>    
+    <class>com.drs.drs_enhanced.model.Notification</class>
     <class>com.drs.drs_enhanced.model.Supply</class>
     <class>com.drs.drs_enhanced.model.User</class>
     <class>com.drs.drs_enhanced.model.PublicUser</class>
@@ -13,7 +14,7 @@
       <property name="jakarta.persistence.jdbc.url" value="jdbc:mysql://localhost:3306/drs_db"/>
       <property name="jakarta.persistence.jdbc.user" value="root"/>
       <property name="jakarta.persistence.jdbc.driver" value="com.mysql.cj.jdbc.Driver"/>
-      <property name="jakarta.persistence.jdbc.password" value="root"/>
+      <property name="jakarta.persistence.jdbc.password" value="qwerty12345"/>
       <property name="jakarta.persistence.schema-generation.database.action" value="create"/>
     </properties>
   </persistence-unit>
