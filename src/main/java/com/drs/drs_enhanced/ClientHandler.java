@@ -30,7 +30,8 @@ public class ClientHandler implements Runnable {
                     Incident incident;
                     Supply supply;
                     Object response;
-                    Shelter shelter;
+                    Shelter shelter;                    
+                    Alert alert;
                     Notification notification;
                     boolean responseBoolean;
 
@@ -157,15 +158,27 @@ public class ClientHandler implements Runnable {
                                 System.out.println("Notification Adding Failed!");
                             }
                             break;
-                            
+
                         case "getAllNotifications":
                             System.out.println("Get All Notification attempt");
                             response = NotificationService.getAllNotifications();
                             out.writeObject(response);
                             break;
 
+                        case "addAlert":
+                            alert = (Alert) data;
+                            System.out.println("Add Alert attempt: " + alert);
+                            responseBoolean = AlertService.createAlert(alert);
+                            out.writeObject(responseBoolean);
+                            if (responseBoolean) {
+                                System.out.println("Alert Adding Success!");
+                            } else {
+                                System.out.println("Alert Adding Failed!");
+                            }
+                            break;
+
                         case "test":
-                            out.writeObject("Server received Notification!");
+                            out.writeObject("Server received Alert!");
                             break;
 
                         default:
