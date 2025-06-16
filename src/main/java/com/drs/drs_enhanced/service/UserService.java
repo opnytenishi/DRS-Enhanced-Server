@@ -3,6 +3,7 @@ package com.drs.drs_enhanced.service;
 import com.drs.drs_enhanced.JPAUtil;
 import com.drs.drs_enhanced.model.Department;
 import com.drs.drs_enhanced.model.Responder;
+import com.drs.drs_enhanced.model.Supply;
 import com.drs.drs_enhanced.model.User;
 import jakarta.persistence.*;
 import java.util.List;
@@ -64,7 +65,7 @@ public class UserService {
             if (transaction.isActive()) {
                 transaction.rollback();
             }
-            e.printStackTrace();
+            System.out.println("Error: "+ e.getMessage());
             return false;
         } finally {
             em.close();
@@ -118,5 +119,43 @@ public class UserService {
                      .getResultList();
         }
     }
- 
+    
+    public static boolean assignSupplyToDepartment(Long deptId, Long supplyId) {
+        EntityManager em = JPAUtil.getEntityManager();
+        EntityTransaction tx = em.getTransaction();
+
+        try {
+            Department department = em.find(Department.class, deptId);
+            Supply supply = em.find(Supply.class, supplyId);
+
+            if (department == null || supply == null) {
+                return false;
+            }
+
+            tx.begin();
+
+            System.out.println("Supplies Count : " + department.getSupplies().size());
+
+            if (!department.getSupplies().contains(supply)) {
+                department.getSupplies().add(supply);
+            } else {
+                return false;
+            }
+
+            em.merge(department);
+            tx.commit();
+            return true;
+
+        } catch (Exception e) {
+            if (tx.isActive()) {
+                tx.rollback();
+            }
+            System.out.println("Error: " + e.getMessage());
+            return false;
+
+        } finally {
+            em.close();
+        }
+    }
+
 }
