@@ -189,6 +189,19 @@ public class ClientHandler implements Runnable {
                             out.writeObject(responseBoolean);
                             break;
 
+                        case "getAllAlerts":
+                            System.out.println("Get All Alerts attempt");
+                            response = AlertService.getAllAlerts();
+                            out.writeObject(response);
+                            break;
+
+                        case "deleteAlert":
+                            alert = (Alert) data;
+                            System.out.println("Delete Alert attempt");
+                            response = AlertService.deleteAlert(alert);
+                            out.writeObject(response);
+                            break;
+                            
                         default:
                             out.writeObject("Unknown action: " + action);
                     }
