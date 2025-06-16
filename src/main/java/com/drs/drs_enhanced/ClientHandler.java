@@ -75,6 +75,12 @@ public class ClientHandler implements Runnable {
                             response = IncidentService.getUnassignedIncidents();
                             out.writeObject(response);
                             break;
+                            
+                        case "getAllDepartments":
+                            System.out.println("Get All Departments attempt");
+                            response = UserService.getAllDepartments();
+                            out.writeObject(response);
+                            break;
 
                         case "test":
                             out.writeObject("Server received test!");

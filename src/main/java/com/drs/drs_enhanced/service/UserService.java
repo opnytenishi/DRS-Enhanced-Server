@@ -1,9 +1,11 @@
 package com.drs.drs_enhanced.service;
 
 import com.drs.drs_enhanced.JPAUtil;
+import com.drs.drs_enhanced.model.Department;
 import com.drs.drs_enhanced.model.Responder;
 import com.drs.drs_enhanced.model.User;
 import jakarta.persistence.*;
+import java.util.List;
 
 public class UserService {
     
@@ -106,6 +108,15 @@ public class UserService {
         }
 
         return responder;
+    }
+    
+    public static List<Department> getAllDepartments() {
+        try (EntityManager em = JPAUtil.getEntityManager()) {
+            return em.createNamedQuery(
+                    "Department.findAll", 
+                    Department.class)
+                     .getResultList();
+        }
     }
  
 }
