@@ -30,7 +30,7 @@ public class ClientHandler implements Runnable {
                     Incident incident;
                     Supply supply;
                     Object response;
-                    Shelter shelter;                    
+                    Shelter shelter;
                     Alert alert;
                     Notification notification;
                     boolean responseBoolean;
@@ -177,8 +177,16 @@ public class ClientHandler implements Runnable {
                             }
                             break;
 
-                        case "test":
-                            out.writeObject("Server received Alert!");
+                        case "regionAlert":
+                            region = (String) data;
+                            System.out.println("Region Alert Attempt: " + region);
+                            responseBoolean = AlertService.getAllAlertByRegion(region);
+                            if (responseBoolean) {
+                                System.out.println("Alert to region success");
+                            } else {
+                                System.out.println("Alert to region Failed!");
+                            }
+                            out.writeObject(responseBoolean);
                             break;
 
                         default:

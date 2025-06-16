@@ -2,6 +2,7 @@ package com.drs.drs_enhanced.service;
 
 import com.drs.drs_enhanced.JPAUtil;
 import com.drs.drs_enhanced.model.Alert;
+import com.drs.drs_enhanced.model.Shelter;
 import jakarta.persistence.*;
 import java.util.List;
 
@@ -33,12 +34,17 @@ public class AlertService {
         }
     }
     
-    public static List<Alert> getAllAlerts() {
-        try (EntityManager em = JPAUtil.getEntityManager()) {
-            return em.createNamedQuery(
-                    "Alert.findAll", 
-                    Alert.class)
-                     .getResultList();
+    public static boolean getAllAlertByRegion(String region) {
+        EntityManager em = JPAUtil.getEntityManager();
+        try {
+            TypedQuery<Alert> query = em.createNamedQuery("Alert.findByRegion", Alert.class);
+            query.setParameter("region", region);
+            return !query.getResultList().isEmpty();
+        } catch (NoResultException e) {
+            System.out.println("Get alerts by region failed");
+            return false;
+        } finally {
+            em.close();
         }
     }
 
