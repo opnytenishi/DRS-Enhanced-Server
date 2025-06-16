@@ -1,6 +1,7 @@
 package com.drs.drs_enhanced.service;
 
 import com.drs.drs_enhanced.JPAUtil;
+import com.drs.drs_enhanced.model.Department;
 import com.drs.drs_enhanced.model.Incident;
 import jakarta.persistence.*;
 import java.util.List;
@@ -41,4 +42,37 @@ public class IncidentService {
                      .getResultList();
         }
     }
+    
+    public static boolean assignTeamToIncident(Incident incomingIncident) {
+        EntityManager em = JPAUtil.getEntityManager();
+        EntityTransaction tx = em.getTransaction();
+
+        try {
+            Incident incident = em.find(Incident.class, incomingIncident.getId());
+            if (incident == null || incident.getAssignedDepartment() != null) {
+                return false;
+            }
+            Department managedDept = em.find(Department.class, incomingIncident.getAssignedDepartment().getUserId());
+            if (managedDept == null) {
+                return false;
+            }
+            tx.begin();
+            incident.setAssignedDepartment(managedDept);
+            em.merge(incident);
+            tx.commit();
+
+            return true;
+
+        } catch (Exception e) {
+            if (tx.isActive()) {
+                tx.rollback();
+            }
+            System.out.println("Error: " + e.getMessage());
+            return false;
+
+        } finally {
+            em.close();
+        }
+    }
+
 }

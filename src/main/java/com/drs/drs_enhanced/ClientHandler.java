@@ -81,6 +81,17 @@ public class ClientHandler implements Runnable {
                             response = UserService.getAllDepartments();
                             out.writeObject(response);
                             break;
+                            
+                        case "assignTeamToIncident":
+                            incident = (Incident) data;
+                            responseBoolean = IncidentService.assignTeamToIncident(incident);
+                            out.writeObject(responseBoolean);
+                            if (responseBoolean) {
+                                System.out.println("Assignment Success!");
+                            } else {
+                                System.out.println("Assignment Failed!");
+                            }
+                            break;
 
                         case "test":
                             out.writeObject("Server received test!");
