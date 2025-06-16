@@ -5,6 +5,7 @@
     <class>com.drs.drs_enhanced.model.Department</class>
     <class>com.drs.drs_enhanced.model.Incident</class>
     <class>com.drs.drs_enhanced.model.Responder</class>
+    <class>com.drs.drs_enhanced.model.Shelter</class>
     <class>com.drs.drs_enhanced.model.Supply</class>
     <class>com.drs.drs_enhanced.model.User</class>
     <class>com.drs.drs_enhanced.model.PublicUser</class>

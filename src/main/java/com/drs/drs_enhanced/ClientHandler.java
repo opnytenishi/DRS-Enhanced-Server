@@ -2,6 +2,7 @@ package com.drs.drs_enhanced;
 
 import com.drs.drs_enhanced.model.*;
 import com.drs.drs_enhanced.service.IncidentService;
+import com.drs.drs_enhanced.service.ShelterService;
 import com.drs.drs_enhanced.service.SupplyService;
 import com.drs.drs_enhanced.service.UserService;
 import java.io.ObjectInputStream;
@@ -31,6 +32,7 @@ public class ClientHandler implements Runnable {
                     Incident incident;
                     Supply supply;
                     Object response;
+                    Shelter shelter;
                     boolean responseBoolean;
 
                     switch (action) {
@@ -70,19 +72,19 @@ public class ClientHandler implements Runnable {
                                 System.out.println("Login Failed!");
                             }
                             break;
-                            
+
                         case "getUnassignedIncidents":
                             System.out.println("Get Unassigned Incident attempt");
                             response = IncidentService.getUnassignedIncidents();
                             out.writeObject(response);
                             break;
-                            
+
                         case "getAllDepartments":
                             System.out.println("Get All Departments attempt");
                             response = UserService.getAllDepartments();
                             out.writeObject(response);
                             break;
-                            
+
                         case "assignTeamToIncident":
                             incident = (Incident) data;
                             responseBoolean = IncidentService.assignTeamToIncident(incident);
@@ -93,7 +95,7 @@ public class ClientHandler implements Runnable {
                                 System.out.println("Assignment Failed!");
                             }
                             break;
-                            
+
                         case "addSupply":
                             supply = (Supply) data;
                             System.out.println("Add Supply attempt: " + supply.getName());
@@ -105,24 +107,36 @@ public class ClientHandler implements Runnable {
                                 System.out.println("Supply Adding Failed!");
                             }
                             break;
-                        
+
                         case "getAllSupplies":
                             System.out.println("Get All Supplies attempt");
                             response = SupplyService.getAllSupplies();
                             out.writeObject(response);
                             break;
-                            
+
                         case "assignSupplyToTeam":
                             Map<String, Long> assignData = (Map<String, Long>)data;
                             responseBoolean = UserService.assignSupplyToDepartment(
-                                assignData.get("deptId"),
-                                assignData.get("supplyId")
+                                    assignData.get("deptId"),
+                                    assignData.get("supplyId")
                             );
                             out.writeObject(responseBoolean);
                             if (responseBoolean) {
                                 System.out.println("Assignment Success!");
                             } else {
                                 System.out.println("Assignment Failed!");
+                            }
+                            break;
+
+                        case "addShelter":
+                            shelter = (Shelter) data;
+                            System.out.println("Add Shelter attempt: " + shelter.getShelterDetail());
+                            responseBoolean = ShelterService.createShelter(shelter);
+                            out.writeObject(responseBoolean);
+                            if (responseBoolean) {
+                                System.out.println("Shelter Adding Success!");
+                            } else {
+                                System.out.println("Shelter Adding Failed!");
                             }
                             break;
 
