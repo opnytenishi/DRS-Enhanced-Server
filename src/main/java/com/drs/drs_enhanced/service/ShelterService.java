@@ -2,6 +2,7 @@ package com.drs.drs_enhanced.service;
 
 import com.drs.drs_enhanced.JPAUtil;
 import com.drs.drs_enhanced.model.Shelter;
+import com.drs.drs_enhanced.model.User;
 import jakarta.persistence.*;
 import java.util.List;
 
@@ -33,12 +34,17 @@ public class ShelterService {
         }
     }
     
-    public static List<Shelter> getAllShelters() {
-        try (EntityManager em = JPAUtil.getEntityManager()) {
-            return em.createNamedQuery(
-                    "Shelter.findAll", 
-                    Shelter.class)
-                     .getResultList();
+    public static List<Shelter> getAllShelters(String region) {
+        EntityManager em = JPAUtil.getEntityManager();
+        try {
+            TypedQuery<Shelter> query = em.createNamedQuery("Shelter.findAll", Shelter.class);
+            query.setParameter("region", region);
+            return query.getResultList();
+        } catch (NoResultException e) {
+            System.out.println("Get all shelters failed");
+            return null;
+        } finally {
+            em.close();
         }
     }
 

@@ -26,6 +26,7 @@ public class ClientHandler implements Runnable {
                     String action = request.getAction();
                     Object data = request.getData();
                     User user;
+                    String region;
                     Incident incident;
                     Supply supply;
                     Object response;
@@ -136,6 +137,13 @@ public class ClientHandler implements Runnable {
                             } else {
                                 System.out.println("Shelter Adding Failed!");
                             }
+                            break;
+
+                        case "getAllShelters":
+                            region = (String) data;
+                            System.out.println("Get All Shelters attempt" + region);
+                            response = ShelterService.getAllShelters(region);
+                            out.writeObject(response);
                             break;
 
                         case "addNotification":
