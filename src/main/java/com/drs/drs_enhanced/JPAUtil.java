@@ -1,12 +1,9 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package com.drs.drs_enhanced;
 
 import jakarta.persistence.*;
 
 public class JPAUtil {
+
     private static final EntityManagerFactory emf;
 
     static {
@@ -16,10 +13,10 @@ public class JPAUtil {
     public static EntityManager getEntityManager() {
         return emf.createEntityManager();
     }
-    
+
     public static boolean checkConnection() {
         try (EntityManager em = getEntityManager()) {
-            em.getTransaction().begin();  
+            em.getTransaction().begin();
             em.getTransaction().rollback();
             System.out.println("Database connection successful.");
             return true;

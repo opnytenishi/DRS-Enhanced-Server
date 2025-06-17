@@ -6,10 +6,11 @@ import jakarta.persistence.*;
 import java.util.List;
 
 public class NotificationService {
+
     /**
      * Create a new Notification
-     * 
-     * @param Notification The Notification object with details entered by user
+     *
+     * @param notification The Notification object with details entered by user
      * @return true if successful, false if Notification already exists.
      */
     public static boolean createNotification(Notification notification) {
@@ -32,13 +33,18 @@ public class NotificationService {
             em.close();
         }
     }
-    
+
+    /**
+     * Get All notifications created
+     *
+     * @return list of notifications if exists, empty list if no notifications
+     */
     public static List<Notification> getAllNotifications() {
         try (EntityManager em = JPAUtil.getEntityManager()) {
             return em.createNamedQuery(
-                    "Notification.findAll", 
+                    "Notification.findAll",
                     Notification.class)
-                     .getResultList();
+                    .getResultList();
         }
     }
 

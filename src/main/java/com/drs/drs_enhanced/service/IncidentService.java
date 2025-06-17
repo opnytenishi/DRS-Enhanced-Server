@@ -7,9 +7,10 @@ import jakarta.persistence.*;
 import java.util.List;
 
 public class IncidentService {
+
     /**
      * Create a incident report
-     * 
+     *
      * @param incident The incident object with details entered by user
      * @return true if successful, false if username already exists.
      */
@@ -33,16 +34,27 @@ public class IncidentService {
             em.close();
         }
     }
-    
+
+    /**
+     * Get All unassigned incidents
+     *
+     * @return list of incidents if exists, empty list if no incidents
+     */
     public static List<Incident> getUnassignedIncidents() {
         try (EntityManager em = JPAUtil.getEntityManager()) {
             return em.createNamedQuery(
-                    "Incident.findUnassigned", 
+                    "Incident.findUnassigned",
                     Incident.class)
-                     .getResultList();
+                    .getResultList();
         }
     }
-    
+
+    /**
+     * Update incident with assigned department
+     *
+     * @param incomingIncident
+     * @return true if successful, false if not
+     */
     public static boolean assignTeamToIncident(Incident incomingIncident) {
         EntityManager em = JPAUtil.getEntityManager();
         EntityTransaction tx = em.getTransaction();
@@ -74,18 +86,30 @@ public class IncidentService {
             em.close();
         }
     }
-    
+
+    /**
+     * Get All incidents assigned to given department
+     *
+     * @param deptId department id for which all incidents should be found
+     * @return list of incidents if exists, empty list if no incidents
+     */
     public static List<Incident> getIncidentsForDepartment(Long deptId) {
         EntityManager em = JPAUtil.getEntityManager();
         try {
             return em.createNamedQuery("Incident.findByDepartmentId", Incident.class)
-                     .setParameter("deptId", deptId)
-                     .getResultList();
+                    .setParameter("deptId", deptId)
+                    .getResultList();
         } finally {
             em.close();
         }
     }
-    
+
+    /**
+     * Update incident as completed
+     *
+     * @param incidentId incident id that has to be marked as completed
+     * @return true if successful, false if not
+     */
     public static boolean markIncidentComplete(Long incidentId) {
         EntityManager em = JPAUtil.getEntityManager();
         EntityTransaction tx = em.getTransaction();

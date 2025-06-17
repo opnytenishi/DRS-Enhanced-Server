@@ -103,13 +103,13 @@ public class ClientHandler implements Runnable {
                             List<Incident> incidents = IncidentService.getIncidentsForDepartment(deptId);
                             out.writeObject(incidents);
                             break;
-                        
+
                         case "markIncidentComplete":
                             Long incidentId = (Long) data;
                             boolean updated = IncidentService.markIncidentComplete(incidentId);
                             out.writeObject(updated);
                             break;
-                            
+
                         case "getSuppliesForDepartment":
                             deptId = (Long) data;
                             List<Supply> supplies = UserService.getSuppliesForDepartment(deptId);

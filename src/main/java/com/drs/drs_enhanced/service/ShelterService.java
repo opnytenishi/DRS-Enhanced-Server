@@ -2,14 +2,14 @@ package com.drs.drs_enhanced.service;
 
 import com.drs.drs_enhanced.JPAUtil;
 import com.drs.drs_enhanced.model.Shelter;
-import com.drs.drs_enhanced.model.User;
 import jakarta.persistence.*;
 import java.util.List;
 
 public class ShelterService {
+
     /**
      * Create a new shelter
-     * 
+     *
      * @param shelter The shelter object with details entered by user
      * @return true if successful, false if shelter already exists.
      */
@@ -33,7 +33,13 @@ public class ShelterService {
             em.close();
         }
     }
-    
+
+    /**
+     * Get All shelters created for given region
+     *
+     * @param region region of user
+     * @return list of shelters if exists, empty list if no shelters
+     */
     public static List<Shelter> getAllShelters(String region) {
         EntityManager em = JPAUtil.getEntityManager();
         try {

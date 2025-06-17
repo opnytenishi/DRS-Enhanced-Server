@@ -2,8 +2,6 @@ package com.drs.drs_enhanced.service;
 
 import com.drs.drs_enhanced.JPAUtil;
 import com.drs.drs_enhanced.model.Alert;
-import com.drs.drs_enhanced.model.Notification;
-import com.drs.drs_enhanced.model.Shelter;
 import jakarta.persistence.*;
 import java.util.List;
 
@@ -12,7 +10,7 @@ public class AlertService {
     /**
      * Create a new Alert
      *
-     * @param Alert The Notification object with details entered by user
+     * @param alert The alert object with details entered by user
      * @return true if successful, false if Alert already exists.
      */
     public static boolean createAlert(Alert alert) {
@@ -36,6 +34,12 @@ public class AlertService {
         }
     }
 
+    /**
+     * Check whether alert exists for given region
+     *
+     * @param region The region of user
+     * @return true if exists, false if not
+     */
     public static boolean getAllAlertByRegion(String region) {
         EntityManager em = JPAUtil.getEntityManager();
         try {
@@ -50,6 +54,11 @@ public class AlertService {
         }
     }
 
+    /**
+     * Get All Alerts Published
+     *
+     * @return list of alert if exists, empty list if no alerts
+     */
     public static List<Alert> getAllAlerts() {
         try (EntityManager em = JPAUtil.getEntityManager()) {
             return em.createNamedQuery(
@@ -59,6 +68,11 @@ public class AlertService {
         }
     }
 
+    /**
+     * Delete Alerts Published to given region
+     *
+     * @return true if success, false if error
+     */
     public static boolean deleteAlert(Alert alert) {
         EntityManager em = JPAUtil.getEntityManager();
         EntityTransaction tx = em.getTransaction();
@@ -78,7 +92,7 @@ public class AlertService {
             if (tx.isActive()) {
                 tx.rollback();
             }
-            e.printStackTrace();
+            System.out.println("Error: " + e.getMessage());
             return false;
 
         } finally {

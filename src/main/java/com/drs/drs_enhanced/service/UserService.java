@@ -74,6 +74,11 @@ public class UserService {
         }
     }
 
+    /**
+     * Create a new user account for responder if not exists
+     *
+     * @return responder object if created or found, null if error.
+     */
     public static Responder getOrCreateResponder() {
         EntityManager em = JPAUtil.getEntityManager();
         EntityTransaction transaction = em.getTransaction();
@@ -113,6 +118,11 @@ public class UserService {
         return responder;
     }
 
+    /**
+     * Retrieves all added departments
+     *
+     * @return list of departments if exist, else empty list.
+     */
     public static List<Department> getAllDepartments() {
         try (EntityManager em = JPAUtil.getEntityManager()) {
             return em.createNamedQuery(
@@ -122,6 +132,13 @@ public class UserService {
         }
     }
 
+    /**
+     * Updated Department with assigned supply
+     *
+     * @param deptId
+     * @param supplyId
+     * @return true if success, else false
+     */
     public static boolean assignSupplyToDepartment(Long deptId, Long supplyId) {
         EntityManager em = JPAUtil.getEntityManager();
         EntityTransaction tx = em.getTransaction();
@@ -160,6 +177,12 @@ public class UserService {
         }
     }
 
+    /**
+     * Retrieves all supplied assigned to given department
+     *
+     * @param deptId
+     * @return list of supplies if exist, else empty list.
+     */
     public static List<Supply> getSuppliesForDepartment(Long deptId) {
         EntityManager em = JPAUtil.getEntityManager();
 
