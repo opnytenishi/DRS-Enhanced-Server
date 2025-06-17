@@ -6,12 +6,14 @@ import com.drs.drs_enhanced.model.Responder;
 import com.drs.drs_enhanced.model.Supply;
 import com.drs.drs_enhanced.model.User;
 import jakarta.persistence.*;
+import java.util.ArrayList;
 import java.util.List;
 
 public class UserService {
-    
+
     private final static String responderEmail = "responder@gmail.com";
     private final static String responderPassword = "responder";
+
     /**
      * Authenticate a user by username and password.
      *
@@ -35,10 +37,10 @@ public class UserService {
         }
         return user;
     }
-    
+
     /**
      * Create a new user account
-     * 
+     *
      * @param user The user object with details entered by user
      * @return true if successful, false if username already exists.
      */
@@ -52,7 +54,7 @@ public class UserService {
             query.setParameter("email", user.getEmail());
 
             if (!query.getResultList().isEmpty()) {
-                return false;  
+                return false;
             }
 
             // Create new user
@@ -65,13 +67,13 @@ public class UserService {
             if (transaction.isActive()) {
                 transaction.rollback();
             }
-            System.out.println("Error: "+ e.getMessage());
+            System.out.println("Error: " + e.getMessage());
             return false;
         } finally {
             em.close();
         }
     }
-    
+
     public static Responder getOrCreateResponder() {
         EntityManager em = JPAUtil.getEntityManager();
         EntityTransaction transaction = em.getTransaction();
@@ -79,7 +81,7 @@ public class UserService {
 
         try {
             TypedQuery<Responder> query = em.createQuery(
-                "SELECT r FROM Responder r WHERE r.email = :email", Responder.class);
+                    "SELECT r FROM Responder r WHERE r.email = :email", Responder.class);
             query.setParameter("email", responderEmail);
 
             responder = query.getResultStream().findFirst().orElse(null);
@@ -110,16 +112,16 @@ public class UserService {
 
         return responder;
     }
-    
+
     public static List<Department> getAllDepartments() {
         try (EntityManager em = JPAUtil.getEntityManager()) {
             return em.createNamedQuery(
-                    "Department.findAll", 
+                    "Department.findAll",
                     Department.class)
-                     .getResultList();
+                    .getResultList();
         }
     }
-    
+
     public static boolean assignSupplyToDepartment(Long deptId, Long supplyId) {
         EntityManager em = JPAUtil.getEntityManager();
         EntityTransaction tx = em.getTransaction();
@@ -153,6 +155,25 @@ public class UserService {
             System.out.println("Error: " + e.getMessage());
             return false;
 
+        } finally {
+            em.close();
+        }
+    }
+
+    public static List<Supply> getSuppliesForDepartment(Long deptId) {
+        EntityManager em = JPAUtil.getEntityManager();
+
+        try {
+            Department dept = em.createNamedQuery("Department.findWithSuppliesById", Department.class)
+                    .setParameter("deptId", deptId)
+                    .getSingleResult();
+
+            dept.getSupplies().size();
+
+            return dept.getSupplies();
+
+        } catch (NoResultException e) {
+            return new ArrayList<>();
         } finally {
             em.close();
         }

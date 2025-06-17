@@ -28,6 +28,7 @@ public class ClientHandler implements Runnable {
                     Object data = request.getData();
                     User user;
                     String region;
+                    Long deptId;
                     Incident incident;
                     Supply supply;
                     Object response;
@@ -98,9 +99,15 @@ public class ClientHandler implements Runnable {
                             break;
 
                         case "getIncidentsForDepartment":
-                            Long deptId = (Long) request.getData();
+                            deptId = (Long) data;
                             List<Incident> incidents = IncidentService.getIncidentsForDepartment(deptId);
                             out.writeObject(incidents);
+                            break;
+                            
+                        case "getSuppliesForDepartment":
+                            deptId = (Long) data;
+                            List<Supply> supplies = UserService.getSuppliesForDepartment(deptId);
+                            out.writeObject(supplies);
                             break;
 
                         case "addSupply":
