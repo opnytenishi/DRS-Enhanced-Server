@@ -74,15 +74,43 @@ public class IncidentService {
             em.close();
         }
     }
+    
     public static List<Incident> getIncidentsForDepartment(Long deptId) {
-    EntityManager em = JPAUtil.getEntityManager();
-    try {
-        return em.createNamedQuery("Incident.findByDepartmentId", Incident.class)
-                 .setParameter("deptId", deptId)
-                 .getResultList();
-    } finally {
-        em.close();
+        EntityManager em = JPAUtil.getEntityManager();
+        try {
+            return em.createNamedQuery("Incident.findByDepartmentId", Incident.class)
+                     .setParameter("deptId", deptId)
+                     .getResultList();
+        } finally {
+            em.close();
+        }
     }
-}
+    
+    public static boolean markIncidentComplete(Long incidentId) {
+        EntityManager em = JPAUtil.getEntityManager();
+        EntityTransaction tx = em.getTransaction();
+
+        try {
+            Incident i = em.find(Incident.class, incidentId);
+            if (i == null) {
+                return false;
+            }
+
+            tx.begin();
+            i.setCompleted(true);
+            em.merge(i);
+            tx.commit();
+            return true;
+
+        } catch (Exception e) {
+            if (tx.isActive()) {
+                tx.rollback();
+            }
+            System.out.println("Error: " + e.getMessage());
+            return false;
+        } finally {
+            em.close();
+        }
+    }
 
 }
