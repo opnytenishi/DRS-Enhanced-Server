@@ -5,6 +5,7 @@ import com.drs.drs_enhanced.service.*;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
+import java.util.List;
 import java.util.Map;
 
 public class ClientHandler implements Runnable {
@@ -94,6 +95,12 @@ public class ClientHandler implements Runnable {
                             } else {
                                 System.out.println("Assignment Failed!");
                             }
+                            break;
+
+                        case "getIncidentsForDepartment":
+                            Long deptId = (Long) request.getData();
+                            List<Incident> incidents = IncidentService.getIncidentsForDepartment(deptId);
+                            out.writeObject(incidents);
                             break;
 
                         case "addSupply":
@@ -201,7 +208,7 @@ public class ClientHandler implements Runnable {
                             response = AlertService.deleteAlert(alert);
                             out.writeObject(response);
                             break;
-                            
+
                         default:
                             out.writeObject("Unknown action: " + action);
                     }

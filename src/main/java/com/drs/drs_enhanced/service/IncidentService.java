@@ -74,5 +74,15 @@ public class IncidentService {
             em.close();
         }
     }
+    public static List<Incident> getIncidentsForDepartment(Long deptId) {
+    EntityManager em = JPAUtil.getEntityManager();
+    try {
+        return em.createNamedQuery("Incident.findByDepartmentId", Incident.class)
+                 .setParameter("deptId", deptId)
+                 .getResultList();
+    } finally {
+        em.close();
+    }
+}
 
 }
